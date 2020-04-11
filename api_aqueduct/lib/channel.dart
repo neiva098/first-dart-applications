@@ -12,9 +12,12 @@ class ApiAqueductChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
+    final usersModel = UsersCollection();
 
-    router.route("/users").linkFunction((request) async {
-      final users = usersCollection.find();
+    router.route("/users/:nome").linkFunction((request) async {
+      final nome = request.path.variables['nome'];
+      final users = await usersModel.getCollection().findOne({"nome": nome});
+
       return Response.ok(users);
     });
 
